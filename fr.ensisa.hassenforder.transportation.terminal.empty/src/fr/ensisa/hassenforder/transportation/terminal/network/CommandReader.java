@@ -76,4 +76,9 @@ public class CommandReader extends BasicAbstractReader {
     public void readKO()
     {
     }
+    
+    public Pass getPass()
+    {
+      return pass;
+    }
 }

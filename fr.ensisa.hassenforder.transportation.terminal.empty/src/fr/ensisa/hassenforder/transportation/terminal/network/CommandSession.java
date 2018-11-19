@@ -3,6 +3,7 @@ package fr.ensisa.hassenforder.transportation.terminal.network;
 import java.io.IOException;
 import java.net.Socket;
 
+
 import fr.ensisa.hassenforder.transportation.terminal.model.Pass;
 
 public class CommandSession implements ISession {
@@ -39,13 +40,27 @@ public class CommandSession implements ISession {
 
 	@Override
 	synchronized public Pass getPassById(long passId) {
-        try {
+        try 
+        {
         	if (true != Boolean.TRUE) throw new IOException ();
-            return null;
+        	
+          CommandWriter writer = new CommandWriter(connection.getOutputStream());
+          CommandReader reader = new CommandReader(connection.getInputStream());
+          writer.createGetPassbyId(passId);
+          writer.send();
+          reader.receive();
+          if (reader.getType() == Protocol.REP_PASS_T) 
+          {
+            this.passId = reader.getPass().getPassId();
+            return reader.getPass();
+          }
+          return null;
+          
         } catch (IOException e) {
         	this.passId = 0;
             return null;
         }
+
 	}
 
 	@Override
