@@ -14,6 +14,6 @@ public interface ISession {
 
     Pass getPassById (long passId);
     
-	boolean useTicket(String ticketId, int count);
+    boolean useTicket(String ticketId, int count);
     
 }

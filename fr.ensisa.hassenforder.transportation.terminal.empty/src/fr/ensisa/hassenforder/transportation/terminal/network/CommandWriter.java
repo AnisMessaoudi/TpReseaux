@@ -10,5 +10,18 @@ public class CommandWriter extends BasicAbstractWriter {
     public CommandWriter(OutputStream outputStream) {
         super(outputStream);
     }
+    
+    public void createGetPassbyId(long passId)
+    {
+      writeInt(Protocol.REQ_GET_PASS_BY_ID_T);
+      writeLong(passId);
+    }
+    
+    public void createUseTicket(String ticketId, int count)
+    {
+      writeInt(Protocol.REQ_USE_TICKET);
+      writeString(ticketId);
+      writeInt(count);
+    }
 
 }
