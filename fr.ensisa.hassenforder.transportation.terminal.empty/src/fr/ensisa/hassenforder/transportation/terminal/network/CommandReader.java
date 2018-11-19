@@ -27,7 +27,7 @@ public class CommandReader extends BasicAbstractReader {
           break;
         case Protocol.REP_OK :
           break;
-        case Protocol.REP_PASS :
+        case Protocol.REP_PASS_T :
           readPassReply();
           break;
       }
