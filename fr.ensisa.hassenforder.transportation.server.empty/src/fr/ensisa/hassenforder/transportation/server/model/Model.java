@@ -17,14 +17,14 @@ public class Model {
 	private Map<String, Ticket> tickets;
 	private Map<Long, Transaction> transactions;
 	private Map<String, Integer> prices;
-	
+
 	public static final int LINE	= 0x0FFF0000;
 	public static final int COST	= 0x0000FFFF;
 
 	public void populate () {
 		prices = new TreeMap<String, Integer>();
 		prices.put ("Altkirch",		(1 << 16) |  4);
-		prices.put ("Bâle",			(2 << 16) |  8);
+		prices.put ("BÃ¢le",			(2 << 16) |  8);
 		prices.put ("Belfort",		(1 << 16) | 10);
 		prices.put ("Cernay",		(4 << 16) |  4);
 		prices.put ("Colmar",		(3 << 16) |  9);
@@ -45,7 +45,7 @@ public class Model {
 		{
 			Pass pass2 = new Pass ("1 route ticket two ways");
 			addPass (pass2);
-			Ticket ticket2_1 = new Route (pass2.getPassId(), "Mulhouse", "Bâle", 2);
+			Ticket ticket2_1 = new Route (pass2.getPassId(), "Mulhouse", "BÃ¢le", 2);
 			addTicket(ticket2_1);
 			pass2.addTicket(ticket2_1);
 		}
@@ -73,7 +73,7 @@ public class Model {
 		{
 			Pass pass6 = new Pass ("2 route tickets one way");
 			addPass (pass6);
-			Ticket ticket6_1 = new Route (pass6.getPassId(), "Bâle", "Colmar", 1);
+			Ticket ticket6_1 = new Route (pass6.getPassId(), "BÃ¢le", "Colmar", 1);
 			addTicket(ticket6_1);
 			pass6.addTicket(ticket6_1);
 			Ticket ticket6_2 = new Route (pass6.getPassId(), "Thann", "Cernay", 1);

@@ -12,7 +12,7 @@ public class TerminalSession extends Thread {
 
 	private Socket connection;
 	private NetworkListener listener;
-	
+
 	public TerminalSession(Socket connection, NetworkListener listener) {
 		this.connection = connection;
 		this.listener = listener;
@@ -35,7 +35,7 @@ public class TerminalSession extends Thread {
 			TerminalReader reader = new TerminalReader (connection.getInputStream());
 			reader.receive ();
 			switch (reader.getType ()) {
-			case 0 : return false; // socket closed
+			  case 0 : return false; // socket closed
 			}
 			writer.send ();
 			return true;
