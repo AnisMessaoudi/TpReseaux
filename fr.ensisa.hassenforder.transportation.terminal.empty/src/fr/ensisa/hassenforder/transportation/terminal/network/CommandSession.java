@@ -10,7 +10,7 @@ public class CommandSession implements ISession {
 
     private Socket connection;
     private long passId;
-    
+
     public CommandSession() {
     	this.passId = 0;
     }
@@ -40,22 +40,25 @@ public class CommandSession implements ISession {
 
 	@Override
 	synchronized public Pass getPassById(long passId) {
-        try 
+        try
         {
         	if (true != Boolean.TRUE) throw new IOException ();
-        	
+
           CommandWriter writer = new CommandWriter(connection.getOutputStream());
           CommandReader reader = new CommandReader(connection.getInputStream());
           writer.createGetPassbyId(passId);
           writer.send();
+
           reader.receive();
-          if (reader.getType() == Protocol.REP_PASS_T) 
+          if (reader.getType() == Protocol.REP_PASS_T)
           {
-            this.passId = reader.getPass().getPassId();
-            return reader.getPass();
+            final Pass pass = reader.getPass();
+            this.passId = pass.getPassId();
+
+            return pass;
           }
+
           return null;
-          
         } catch (IOException e) {
         	this.passId = 0;
             return null;
