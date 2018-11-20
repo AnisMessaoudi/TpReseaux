@@ -37,7 +37,7 @@ public class TerminalSession extends Thread {
       switch (reader.getType ()) {
         case 0 : return false;
 
-        case Protocol.REQ_GET_PASS_BY_ID_T:
+        case Protocol.REQ_GET_PASS_BY_ID:
           final long passId =
             ((TerminalReader.GetPassByIdResult) reader.getResult()).passId
           ;

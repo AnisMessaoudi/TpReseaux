@@ -13,7 +13,7 @@ public class CommandWriter extends BasicAbstractWriter {
     
     public void createGetPassbyId(long passId)
     {
-      writeInt(Protocol.REQ_GET_PASS_BY_ID_T);
+      writeInt(Protocol.REQ_GET_PASS_BY_ID);
       writeLong(passId);
     }
     

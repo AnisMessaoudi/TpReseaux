@@ -50,7 +50,7 @@ public class TerminalReader extends BasicAbstractReader {
     switch (type) {
       case 0 : break;
 
-      case Protocol.REQ_GET_PASS_BY_ID_T:
+      case Protocol.REQ_GET_PASS_BY_ID:
         this.result = this.readGetPassById();
         break;
 
