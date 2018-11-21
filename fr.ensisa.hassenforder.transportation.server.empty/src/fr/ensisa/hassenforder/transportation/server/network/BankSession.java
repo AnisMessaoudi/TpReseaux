@@ -38,8 +38,32 @@ public class BankSession implements ISession {
   @Override
   synchronized public boolean bankWithdraw (long cardId, int amount) {
         try {
-          if (true != Boolean.TRUE) throw new IOException ();
-            return false;
+          final BankWriter writer = new BankWriter(
+            connection.getOutputStream()
+          );
+          final BankReader reader = new BankReader(connection.getInputStream());
+
+          writer.writeBankWithdrawRequest(cardId, amount);
+          writer.send();
+
+          reader.receive();
+          switch(reader.getType()) {
+            case Protocol.REQ_BANK_WITHDRAW:
+              final Object result = reader.getResult();
+
+              if (result == null) {
+                return false;
+              }
+              if (result instanceof BankReader.OkResult) {
+                return true;
+              }
+              if (result instanceof BankReader.KoResult) {
+                return false;
+              }
+
+            default:
+              return false;
+          }
         } catch (IOException e) {
           return false;
         }
