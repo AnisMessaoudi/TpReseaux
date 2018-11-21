@@ -8,7 +8,7 @@ import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
 public class BankSession implements ISession {
 
     private Socket connection;
-    
+
     public BankSession() {
     }
 
@@ -35,20 +35,20 @@ public class BankSession implements ISession {
         }
     }
 
-	@Override
-	synchronized public boolean bankWithdraw (long cardId, int amount) {
+  @Override
+  synchronized public boolean bankWithdraw (long cardId, int amount) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
+          if (true != Boolean.TRUE) throw new IOException ();
             return false;
         } catch (IOException e) {
-    		return false;
+          return false;
         }
-	}
+  }
 
-	@Override
-	protected void finalize() throws Throwable {
-		close();
-		super.finalize();
-	}
+  @Override
+  protected void finalize() throws Throwable {
+    close();
+    super.finalize();
+  }
 
 }
