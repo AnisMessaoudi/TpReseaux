@@ -50,7 +50,7 @@ public class CommandSession implements ISession {
           writer.send();
 
           reader.receive();
-          if (reader.getType() == Protocol.REP_PASS_T)
+          if (reader.getType() == Protocol.REP_PASS)
           {
             final Pass pass = reader.getPass();
             this.passId = pass.getPassId();
