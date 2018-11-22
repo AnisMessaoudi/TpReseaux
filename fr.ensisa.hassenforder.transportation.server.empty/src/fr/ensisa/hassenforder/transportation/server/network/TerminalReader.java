@@ -5,11 +5,11 @@ import java.io.InputStream;
 import fr.ensisa.hassenforder.network.BasicAbstractReader;
 import fr.ensisa.hassenforder.transportation.terminal.network.Protocol;
 
-public class TerminalReader extends BasicAbstractReader {
+public class TerminalReader extends BasicAbstractReader
+{
   public static class GetPassByIdResult
   {
     public final long passId;
-
 
     private GetPassByIdResult(long passId)
     {
@@ -24,7 +24,6 @@ public class TerminalReader extends BasicAbstractReader {
     public final long passId;
     public final String ticketId;
     public final int count;
-
 
     private UseTicketResult(long passId, String ticketId, int count)
     {
@@ -41,14 +40,15 @@ public class TerminalReader extends BasicAbstractReader {
 
 
 
-  public TerminalReader(InputStream inputStream) {
+  public TerminalReader(InputStream inputStream)
+  {
     super (inputStream);
   }
 
   public void receive() {
     type = readInt ();
     switch (type) {
-      case 0 : break;
+      default: break;
 
       case Protocol.REQ_GET_PASS_BY_ID:
         this.result = this.readGetPassById();
@@ -62,7 +62,7 @@ public class TerminalReader extends BasicAbstractReader {
 
 
 
-  public Object getResult()
+  public Object retrieveResult()
   {
     final Object result = this.result;
 

@@ -35,11 +35,11 @@ public class TerminalSession extends Thread {
       TerminalReader reader = new TerminalReader (connection.getInputStream());
       reader.receive ();
       switch (reader.getType ()) {
-        case 0 : return false;
+        default: return false;
 
         case Protocol.REQ_GET_PASS_BY_ID:
           final TerminalReader.GetPassByIdResult getPassByIdResult =
-            (TerminalReader.GetPassByIdResult) reader.getResult()
+            (TerminalReader.GetPassByIdResult) reader.retrieveResult()
           ;
           if (getPassByIdResult == null) {
             writer.writeKoReply();
@@ -59,7 +59,7 @@ public class TerminalSession extends Thread {
 
         case Protocol.REQ_USE_TICKET:
           final TerminalReader.UseTicketResult useTicketResult =
-            (TerminalReader.UseTicketResult) reader.getResult()
+            (TerminalReader.UseTicketResult) reader.retrieveResult()
           ;
           if (useTicketResult == null) {
             writer.writeKoReply();
@@ -75,7 +75,7 @@ public class TerminalSession extends Thread {
           } else {
             writer.writeKoReply();
           }
-          break;  // socket closed
+          break;
       }
       writer.send ();
       return true;
