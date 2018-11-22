@@ -48,18 +48,8 @@ public class BankSession implements ISession {
 
           reader.receive();
           switch(reader.getType()) {
-            case Protocol.REQ_BANK_WITHDRAW:
-              final Object result = reader.getResult();
-
-              if (result == null) {
-                return false;
-              }
-              if (result instanceof BankReader.OkResult) {
-                return true;
-              }
-              if (result instanceof BankReader.KoResult) {
-                return false;
-              }
+            case Protocol.REP_OK:
+              return true;
 
             default:
               return false;

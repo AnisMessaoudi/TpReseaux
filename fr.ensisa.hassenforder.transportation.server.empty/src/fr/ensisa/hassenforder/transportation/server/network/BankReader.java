@@ -33,7 +33,7 @@ public class BankReader extends BasicAbstractReader
   {
     type = readInt();
     switch (type) {
-      case 0:
+      default:
         break;
 
       case Protocol.REP_OK:
