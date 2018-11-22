@@ -7,21 +7,6 @@ import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
 
 public class BankReader extends BasicAbstractReader
 {
-  public static class OkResult
-  {
-  }
-
-
-  public static class KoResult
-  {
-  }
-
-
-
-  private Object result = null;
-
-
-
   public BankReader(InputStream inputStream)
   {
     super(inputStream);
@@ -37,34 +22,10 @@ public class BankReader extends BasicAbstractReader
         break;
 
       case Protocol.REP_OK:
-        this.result = this.readOk();
+        break;
 
       case Protocol.REP_KO:
-        this.result = this.readKo();
+        break;
     }
-  }
-
-
-
-  public Object retrieveResult()
-  {
-    final Object result = this.result;
-
-    this.result = null;
-
-    return result;
-  }
-
-
-
-  private OkResult readOk()
-  {
-    return new OkResult();
-  }
-
-
-  private KoResult readKo()
-  {
-    return new KoResult();
   }
 }

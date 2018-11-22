@@ -5,64 +5,74 @@ import java.net.Socket;
 
 import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
 
-public class BankSession implements ISession {
 
-    private Socket connection;
 
-    public BankSession() {
-    }
+public class BankSession implements ISession
+{
+  private Socket connection;
 
-    @Override
-    synchronized public boolean close() {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-            connection = null;
-        } catch (IOException e) {
-        }
-        return true;
-    }
 
-    @Override
-    synchronized public boolean open() {
-        this.close();
-        try {
-            connection = new Socket("localhost", Protocol.BANK_PORT);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
+
+  public BankSession()
+  {
+  }
+
+
 
   @Override
-  synchronized public boolean bankWithdraw (long cardId, int amount) {
-        try {
-          final BankWriter writer = new BankWriter(
-            connection.getOutputStream()
-          );
-          final BankReader reader = new BankReader(connection.getInputStream());
+  synchronized public boolean close()
+  {
+    try {
+      if (connection != null) {
+        connection.close();
+      }
+      connection = null;
+    } catch (IOException e) {
+    }
+    return true;
+  }
 
-          writer.writeBankWithdrawRequest(cardId, amount);
-          writer.send();
 
-          reader.receive();
-          switch(reader.getType()) {
-            case Protocol.REP_OK:
-              return true;
+  @Override
+  synchronized public boolean open()
+  {
+    this.close();
+    try {
+      connection = new Socket("localhost", Protocol.BANK_PORT);
+      return true;
+    } catch (IOException e) {
+      return false;
+    }
+  }
 
-            default:
-              return false;
-          }
-        } catch (IOException e) {
+
+  @Override
+  synchronized public boolean bankWithdraw(long cardId, int amount)
+  {
+    try {
+      final BankWriter writer = new BankWriter(connection.getOutputStream());
+      final BankReader reader = new BankReader(connection.getInputStream());
+
+      writer.writeBankWithdrawRequest(cardId, amount);
+      writer.send();
+
+      reader.receive();
+      switch(reader.getType()) {
+        default:
           return false;
-        }
+
+        case Protocol.REP_OK:
+          return true;
+      }
+    } catch (IOException e) {
+      return false;
+    }
   }
 
   @Override
-  protected void finalize() throws Throwable {
+  protected void finalize() throws Throwable
+  {
     close();
     super.finalize();
   }
-
 }
