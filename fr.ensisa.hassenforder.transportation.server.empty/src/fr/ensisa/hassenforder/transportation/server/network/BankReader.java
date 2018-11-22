@@ -37,16 +37,16 @@ public class BankReader extends BasicAbstractReader
         break;
 
       case Protocol.REP_OK:
-        this.result = this.readOkResult();
+        this.result = this.readOk();
 
       case Protocol.REP_KO:
-        this.result = this.readKoResult();
+        this.result = this.readKo();
     }
   }
 
 
 
-  public Object getResult()
+  public Object retrieveResult()
   {
     final Object result = this.result;
 
@@ -57,13 +57,13 @@ public class BankReader extends BasicAbstractReader
 
 
 
-  private OkResult readOkResult()
+  private OkResult readOk()
   {
     return new OkResult();
   }
 
 
-  private KoResult readKoResult()
+  private KoResult readKo()
   {
     return new KoResult();
   }
