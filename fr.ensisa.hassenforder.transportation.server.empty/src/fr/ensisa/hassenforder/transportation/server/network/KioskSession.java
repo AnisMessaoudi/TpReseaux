@@ -55,36 +55,37 @@ public class KioskSession extends Thread
 
         case Protocol.REQ_GET_PASS_BY_ID:
           this.handleGetPassByIdRequest(
-            writer, (KioskReader.GetPassByIdResult) reader.extractResult()
+            writer, (KioskReader.GetPassByIdRequest) reader.extractRequest()
           );
           break;
 
         case Protocol.REQ_BUY_ROUTE:
           this.handleBuyRouteRequest(
-            writer, (KioskReader.BuyRouteResult) reader.extractResult()
+            writer, (KioskReader.BuyRouteRequest) reader.extractRequest()
           );
           break;
 
         case Protocol.REQ_BUY_URBAN:
           this.handleBuyUrbanRequest(
-            writer, (KioskReader.BuyUrbanResult) reader.extractResult()
+            writer, (KioskReader.BuyUrbanRequest) reader.extractRequest()
           );
           break;
 
         case Protocol.REQ_BUY_SUBSCRIPTION:
           this.handleBuySubscriptionRequest(
-            writer, (KioskReader.BuySubscriptionResult) reader.extractResult()
+            writer, (KioskReader.BuySubscriptionRequest) reader.extractRequest()
           );
           break;
 
         case Protocol.REQ_PAY_TRANSACTION:
           this.handlePayTransactionRequest(
-            writer, (KioskReader.PayTransactionResult) reader.extractResult()
+            writer, (KioskReader.PayTransactionRequest) reader.extractRequest()
           );
 
         case Protocol.REQ_CANCEL_TRANSACTION:
           this.handleCancelTransactionRequest(
-            writer, (KioskReader.CancelTransactionResult) reader.extractResult()
+            writer,
+            (KioskReader.CancelTransactionRequest) reader.extractRequest()
           );
       }
 
@@ -122,11 +123,11 @@ public class KioskSession extends Thread
 
 
   private void handleGetPassByIdRequest(
-    KioskWriter writer, KioskReader.GetPassByIdResult result
+    KioskWriter writer, KioskReader.GetPassByIdRequest request
   )
   {
-    if (result != null) {
-      final Pass pass = this.listener.kioskFetchPass(result.passId);
+    if (request != null) {
+      final Pass pass = this.listener.kioskFetchPass(request.passId);
 
       if (pass != null) {
         writer.writePassReply(pass);
@@ -139,15 +140,15 @@ public class KioskSession extends Thread
 
 
   private void handleBuyRouteRequest(
-    KioskWriter writer, KioskReader.BuyRouteResult result
+    KioskWriter writer, KioskReader.BuyRouteRequest request
   )
   {
-    if (result != null) {
+    if (request != null) {
       final Route route = new Route(
-        result.passId, result.from, result.to, result.count
+        request.passId, request.from, request.to, request.count
       );
 
-      if (result.count > 0) {
+      if (request.count > 0) {
         final Transaction trans = this.listener.kioskCreateTransaction(route);
 
         if (trans != null) {
@@ -162,13 +163,13 @@ public class KioskSession extends Thread
 
 
   private void handleBuyUrbanRequest(
-    KioskWriter writer, KioskReader.BuyUrbanResult result
+    KioskWriter writer, KioskReader.BuyUrbanRequest request
   )
   {
-    if (result != null) {
-      final Urban urban = new Urban(result.passId, result.count);
+    if (request != null) {
+      final Urban urban = new Urban(request.passId, request.count);
 
-      if (result.count > 0) {
+      if (request.count > 0) {
         final Transaction trans = this.listener.kioskCreateTransaction(urban);
 
         if (trans != null) {
@@ -183,15 +184,15 @@ public class KioskSession extends Thread
 
 
   private void handleBuySubscriptionRequest(
-    KioskWriter writer, KioskReader.BuySubscriptionResult result
+    KioskWriter writer, KioskReader.BuySubscriptionRequest request
   )
   {
-    if (result != null) {
+    if (request != null) {
       final Subscription.Month[] months = Subscription.Month.values();
 
-      if (result.month >= 0 && result.month < months.length) {
+      if (request.month >= 0 && request.month < months.length) {
         final Subscription urban = new Subscription(
-          result.passId, months[result.month]
+          request.passId, months[request.month]
         );
 
         if (urban != null) {
@@ -210,16 +211,16 @@ public class KioskSession extends Thread
 
 
   private void handlePayTransactionRequest(
-    KioskWriter writer, KioskReader.PayTransactionResult result
+    KioskWriter writer, KioskReader.PayTransactionRequest request
   )
   {
-    if (result != null) {
-      final long transResult = this.listener.kioskPayTransaction(
-        result.id, result.passId
+    if (request != null) {
+      final long passId = this.listener.kioskPayTransaction(
+        request.id, request.passId
       );
 
-      if (transResult >= 0) {
-        writer.writePassIdReply(transResult);
+      if (passId >= 0) {
+        writer.writePassIdReply(passId);
         return;
       }
     }
@@ -229,11 +230,11 @@ public class KioskSession extends Thread
 
 
   private void handleCancelTransactionRequest(
-    KioskWriter writer, KioskReader.CancelTransactionResult result
+    KioskWriter writer, KioskReader.CancelTransactionRequest request
   )
   {
-    if (result != null) {
-      if (this.listener.kioskCancelTransaction(result.id)) {
+    if (request != null) {
+      if (this.listener.kioskCancelTransaction(request.id)) {
         writer.writeOkReply();
         return;
       }

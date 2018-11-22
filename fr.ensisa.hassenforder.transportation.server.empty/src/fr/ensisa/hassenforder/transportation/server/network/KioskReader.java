@@ -13,20 +13,20 @@ import fr.ensisa.hassenforder.transportation.server.model.Urban;
 
 public class KioskReader extends BasicAbstractReader
 {
-  public static class NewPassResult
+  public static class NewPassRequest
   {
-    private NewPassResult()
+    private NewPassRequest()
     {
       super();
     }
   }
 
 
-  public static class GetPassByIdResult
+  public static class GetPassByIdRequest
   {
     public final long passId;
 
-    private GetPassByIdResult(long passId)
+    private GetPassByIdRequest(long passId)
     {
       super();
       this.passId = passId;
@@ -34,14 +34,14 @@ public class KioskReader extends BasicAbstractReader
   }
 
 
-  public static class BuyRouteResult
+  public static class BuyRouteRequest
   {
     public final long passId;
     public final String from;
     public final String to;
     public final int count;
 
-    private BuyRouteResult(long passId, String from, String to, int count)
+    private BuyRouteRequest(long passId, String from, String to, int count)
     {
       super();
       this.passId = passId;
@@ -52,12 +52,12 @@ public class KioskReader extends BasicAbstractReader
   }
 
 
-  public static class BuyUrbanResult
+  public static class BuyUrbanRequest
   {
     public final long passId;
     public final int count;
 
-    private BuyUrbanResult(long passId, int count)
+    private BuyUrbanRequest(long passId, int count)
     {
       super();
       this.passId = passId;
@@ -66,12 +66,12 @@ public class KioskReader extends BasicAbstractReader
   }
 
 
-  public static class BuySubscriptionResult
+  public static class BuySubscriptionRequest
   {
     public final long passId;
     public final int month;
 
-    private BuySubscriptionResult(long passId, int month)
+    private BuySubscriptionRequest(long passId, int month)
     {
       super();
       this.passId = passId;
@@ -80,12 +80,12 @@ public class KioskReader extends BasicAbstractReader
   }
 
 
-  public static class PayTransactionResult
+  public static class PayTransactionRequest
   {
     public final long id;
     public final long passId;
 
-    private PayTransactionResult(long id, long passId)
+    private PayTransactionRequest(long id, long passId)
     {
       super();
       this.id = id;
@@ -94,11 +94,11 @@ public class KioskReader extends BasicAbstractReader
   }
 
 
-  public static class CancelTransactionResult
+  public static class CancelTransactionRequest
   {
     public final long id;
 
-    private CancelTransactionResult(long id)
+    private CancelTransactionRequest(long id)
     {
       super();
       this.id = id;
@@ -107,7 +107,7 @@ public class KioskReader extends BasicAbstractReader
 
 
 
-  private Object result = null;
+  private Object request = null;
 
 
 
@@ -126,102 +126,102 @@ public class KioskReader extends BasicAbstractReader
         break;
 
       case Protocol.REQ_NEW_PASS:
-        this.result = this.readNewPass();
+        this.request = this.readNewPass();
         break;
 
       case Protocol.REQ_GET_PASS_BY_ID:
-        this.result = this.readGetPassById();
+        this.request = this.readGetPassById();
         break;
 
       case Protocol.REQ_BUY_ROUTE:
-        this.result = this.readBuyRoute();
+        this.request = this.readBuyRoute();
         break;
 
       case Protocol.REQ_BUY_URBAN:
-        this.result = this.readBuyUrban();
+        this.request = this.readBuyUrban();
         break;
 
       case Protocol.REQ_BUY_SUBSCRIPTION:
-        this.result = this.readBuySubscription();
+        this.request = this.readBuySubscription();
         break;
 
       case Protocol.REQ_PAY_TRANSACTION:
-        this.result = this.readPayTransaction();
+        this.request = this.readPayTransaction();
         break;
 
       case Protocol.REQ_CANCEL_TRANSACTION:
-        this.result = this.readCancelTransaction();
+        this.request = this.readCancelTransaction();
     }
   }
 
 
-  public Object extractResult()
+  public Object extractRequest()
   {
-    final Object result = this.result;
+    final Object request = this.request;
 
-    this.result = null;
+    this.request = null;
 
-    return result;
+    return request;
   }
 
 
 
-  private NewPassResult readNewPass()
+  private NewPassRequest readNewPass()
   {
-    return new NewPassResult();
+    return new NewPassRequest();
   }
 
 
-  private GetPassByIdResult readGetPassById()
+  private GetPassByIdRequest readGetPassById()
   {
     final long passId = this.readLong();
 
-    return new GetPassByIdResult(passId);
+    return new GetPassByIdRequest(passId);
   }
 
 
-  private BuyRouteResult readBuyRoute()
+  private BuyRouteRequest readBuyRoute()
   {
     final long passId = this.readLong();
     final String from = this.readString();
     final String to = this.readString();
     final int count = this.readInt();
 
-    return new BuyRouteResult(passId, from, to, count);
+    return new BuyRouteRequest(passId, from, to, count);
   }
 
 
-  private BuyUrbanResult readBuyUrban()
+  private BuyUrbanRequest readBuyUrban()
   {
     final long passId = this.readLong();
     final int count = this.readInt();
 
-    return new BuyUrbanResult(passId, count);
+    return new BuyUrbanRequest(passId, count);
   }
 
 
-  private BuySubscriptionResult readBuySubscription()
+  private BuySubscriptionRequest readBuySubscription()
   {
     final long passId = this.readLong();
     final int month = this.readInt();
 
-    return new BuySubscriptionResult(passId, month);
+    return new BuySubscriptionRequest(passId, month);
   }
 
 
-  private PayTransactionResult readPayTransaction()
+  private PayTransactionRequest readPayTransaction()
   {
     final long id = this.readLong();
     final long passId = this.readLong();
 
-    return new PayTransactionResult(id, passId);
+    return new PayTransactionRequest(id, passId);
   }
 
 
-  private CancelTransactionResult readCancelTransaction()
+  private CancelTransactionRequest readCancelTransaction()
   {
     final long id = this.readLong();
 
-    return new CancelTransactionResult(id);
+    return new CancelTransactionRequest(id);
   }
 }
