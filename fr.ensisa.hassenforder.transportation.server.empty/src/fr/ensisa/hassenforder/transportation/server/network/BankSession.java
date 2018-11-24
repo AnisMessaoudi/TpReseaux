@@ -58,12 +58,17 @@ public class BankSession implements ISession
 
       reader.receive();
       switch(reader.getType()) {
+        case 0:
+          return false; // socket closed
+
         default:
           return false;
 
         case Protocol.REP_OK:
-          return true;
+          break;
       }
+
+      return true;
     } catch (IOException e) {
       return false;
     }
