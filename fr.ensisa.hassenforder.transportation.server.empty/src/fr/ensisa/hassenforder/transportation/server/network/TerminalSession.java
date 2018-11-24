@@ -44,7 +44,12 @@ public class TerminalSession extends Thread
 
       reader.receive();
       switch (reader.getType ()) {
-        default: return false;
+        case 0:
+          return false; // socket closed
+
+        default:
+          writer.writeKoReply();
+          break;
 
         case Protocol.REQ_GET_PASS_BY_ID:
           this.handleGetPassByIdRequest(
@@ -65,6 +70,7 @@ public class TerminalSession extends Thread
       return false;
     }
   }
+
 
   public void run()
   {
