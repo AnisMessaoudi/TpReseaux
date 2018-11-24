@@ -70,7 +70,20 @@ public class CommandSession implements ISession {
 	synchronized public boolean useTicket(String ticketId, int count) {
         try {
         	if (true != Boolean.TRUE) throw new IOException ();
-            return false;
+        	
+          CommandWriter writer = new CommandWriter(connection.getOutputStream());
+          CommandReader reader = new CommandReader(connection.getInputStream());
+          writer.createUseTicket(ticketId, count);;
+          writer.send();
+
+          reader.receive();
+          if (reader.getType() == Protocol.REP_OK)
+          {
+            //;
+            return true;
+          }
+          
+         return false;
         } catch (IOException e) {
     		return false;
         }
