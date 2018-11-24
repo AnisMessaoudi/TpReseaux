@@ -50,6 +50,7 @@ public class KioskSession extends Thread
           return false; // socket closed
 
         default:
+          writer.writeKoReply();
           break;
 
         case Protocol.REQ_NEW_PASS:
