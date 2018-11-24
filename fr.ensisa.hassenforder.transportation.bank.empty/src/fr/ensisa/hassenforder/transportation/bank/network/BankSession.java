@@ -64,12 +64,13 @@ public class BankSession extends Thread
       BankWriter writer = new BankWriter(connection.getOutputStream());
       BankReader reader = new BankReader(connection.getInputStream());
 
-      reader.receive ();
+      reader.receive();
       switch (reader.getType()) {
         case 0:
           return false; // socket closed
 
         default:
+          writer.writeKoReply();
           break;
 
         case Protocol.REQ_BANK_WITHDRAW:
