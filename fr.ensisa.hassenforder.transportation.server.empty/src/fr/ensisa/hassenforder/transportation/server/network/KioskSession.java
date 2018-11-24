@@ -46,8 +46,11 @@ public class KioskSession extends Thread
 
       reader.receive();
       switch (reader.getType()) {
+        case 0:
+          return false; // socket closed
+
         default:
-          return false;
+          break;
 
         case Protocol.REQ_NEW_PASS:
           this.handleNewPassRequest(writer);
@@ -81,12 +84,14 @@ public class KioskSession extends Thread
           this.handlePayTransactionRequest(
             writer, (KioskReader.PayTransactionRequest) reader.extractRequest()
           );
+          break;
 
         case Protocol.REQ_CANCEL_TRANSACTION:
           this.handleCancelTransactionRequest(
             writer,
             (KioskReader.CancelTransactionRequest) reader.extractRequest()
           );
+          break;
       }
 
       writer.send();
