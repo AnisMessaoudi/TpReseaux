@@ -42,7 +42,6 @@ public class CommandSession implements ISession {
 	synchronized public Pass getPassById(long passId) {
         try
         {
-        	if (true != Boolean.TRUE) throw new IOException ();
 
           CommandWriter writer = new CommandWriter(connection.getOutputStream());
           CommandReader reader = new CommandReader(connection.getInputStream());
@@ -50,15 +49,17 @@ public class CommandSession implements ISession {
           writer.send();
 
           reader.receive();
-          if (reader.getType() == Protocol.REP_PASS)
+          switch(reader.getType()) 
           {
-            final Pass pass = reader.getPass();
-            this.passId = pass.getPassId();
-
-            return pass;
+            default :
+              return null;
+              
+            case Protocol.REP_PASS :
+              final Pass pass = reader.getPass();
+              this.passId = pass.getPassId();
+              return pass;
           }
-
-          return null;
+          
         } catch (IOException e) {
         	this.passId = 0;
             return null;
@@ -69,21 +70,27 @@ public class CommandSession implements ISession {
 	@Override
 	synchronized public boolean useTicket(String ticketId, int count) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
         	
           CommandWriter writer = new CommandWriter(connection.getOutputStream());
           CommandReader reader = new CommandReader(connection.getInputStream());
-          writer.createUseTicket(ticketId, count);;
+          writer.createUseTicket(passId,ticketId, count);
           writer.send();
 
           reader.receive();
-          if (reader.getType() == Protocol.REP_OK)
+          switch(reader.getType()) 
           {
-            //;
-            return true;
+          case 0:
+            return false; // socket closed
+
+          default:
+            return false;
+
+          case Protocol.REP_OK:
+            break;
           }
-          
-         return false;
+
+        return true;
+        
         } catch (IOException e) {
     		return false;
         }
