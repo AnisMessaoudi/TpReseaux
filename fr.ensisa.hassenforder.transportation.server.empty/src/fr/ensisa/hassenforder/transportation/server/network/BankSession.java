@@ -15,6 +15,8 @@ public class BankSession implements ISession
 
   public BankSession()
   {
+    super();
+    this.open();
   }
 
 
