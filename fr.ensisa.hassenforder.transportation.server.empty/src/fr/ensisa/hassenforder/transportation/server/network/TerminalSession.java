@@ -83,9 +83,7 @@ public class TerminalSession extends Thread
     } catch (IOException e) {
     }
   }
-
-
-
+  
   private void handleGetPassByIdRequest(
     TerminalWriter writer, TerminalReader.GetPassByIdRequest request
   )
@@ -122,3 +120,5 @@ public class TerminalSession extends Thread
     writer.writeKoReply();
   }
 }
+
+
