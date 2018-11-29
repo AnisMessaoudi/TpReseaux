@@ -54,7 +54,7 @@ public class KioskWriter extends BasicAbstractWriter
 
     for (Ticket t: tickets) {
       if (t instanceof Route) {
-        this.writeInt(1);
+        this.writeInt(Ticket.Type.ROUTE.ordinal());
 
         final Route route = (Route) t;
 
@@ -65,7 +65,7 @@ public class KioskWriter extends BasicAbstractWriter
         this.writeInt(route.getCount());
         this.writeInt(route.getUsed());
       } else if (t instanceof Urban) {
-        this.writeInt(2);
+        this.writeInt(Ticket.Type.URBAN.ordinal());
 
         final Urban urban = (Urban) t;
 
@@ -76,7 +76,7 @@ public class KioskWriter extends BasicAbstractWriter
         this.writeInt(urban.getCount());
         this.writeInt(urban.getUsed());
       } else {
-        this.writeInt(3);
+        this.writeInt(Ticket.Type.SUBSCRIPTION.ordinal());
 
         final Subscription sub = (Subscription) t;
 
