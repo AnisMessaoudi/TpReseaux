@@ -11,6 +11,8 @@ import fr.ensisa.hassenforder.transportation.kiosk.model.Transaction;
 public class KioskReader extends BasicAbstractReader {
 
     private Pass pass;
+    private long passId;
+    private Transaction transaction;
 
     public KioskReader(InputStream inputStream) {
         super(inputStream);
@@ -41,6 +43,8 @@ public class KioskReader extends BasicAbstractReader {
 
     private void readPassReply()
     {
+      Ticket.Month month=null;
+      
       long passId = readLong();
       String description = readString();
       pass = new Pass(passId, description);
@@ -53,7 +57,10 @@ public class KioskReader extends BasicAbstractReader {
           String id = readString();
           String from = readString();
           String to = readString();
-          Ticket.Month month = Ticket.Month.values()[readInt()];
+          int j=readInt();
+          if( j != -1) {
+             month = Ticket.Month.values()[j];
+          }
           int count = readInt();
           int used = readInt();
           switch (type)
@@ -69,14 +76,16 @@ public class KioskReader extends BasicAbstractReader {
             break;
           default:
             break;
-          } // END switch
-        } // END For
-      } // END if
+          }
+        }
+      }
+      
     }
+
 
     private void readNewPassReply()
     {
-      long passId = readLong();
+      passId = readLong();
       
     }
 
@@ -84,13 +93,25 @@ public class KioskReader extends BasicAbstractReader {
     {
       long id= readLong();
       int amount = readInt();
-      
+      transaction = new Transaction(id, amount);
     }
 
     private void readPassIdReply()
     {
-      long passId= readLong();
-      
+      passId= readLong();
+    }
+    
+
+    public Pass getPass() {
+      return pass;
+    }
+    
+    public long getPassId() {
+      return passId;
+    }
+    
+    public Transaction getTransaction() {
+      return transaction;
     }
 
 }
