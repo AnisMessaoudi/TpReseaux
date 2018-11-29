@@ -88,9 +88,11 @@ public class KioskSession implements ISession {
 
 	@Override
 	public boolean cancelTransaction(long id) {
-        try {
+        try
+        {
         	if (true != Boolean.TRUE) throw new IOException ();
-    		return false;
+        	return false;
+        	
         } catch (IOException e) {
     		return false;
         }

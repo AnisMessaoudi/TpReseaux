@@ -39,15 +39,13 @@ public class TerminalSession extends Thread {
 
         case Protocol.REQ_GET_PASS_BY_ID:
           final long passId =
-            ((TerminalReader.GetPassByIdResult) reader.getResult()).passId
-          ;
+            ((TerminalReader.GetPassByIdResult) reader.getResult()).passId;
           writer.writePassReply(this.listener.terminalFetchPass(passId));
           break;
 
         case Protocol.REQ_USE_TICKET:
           final TerminalReader.UseTicketResult result =
-            (TerminalReader.UseTicketResult) reader.getResult()
-          ;
+            (TerminalReader.UseTicketResult) reader.getResult();
           if (this.listener.terminalUseTicket(result.passId, result.ticketId, result.count)) {
             writer.writeOkReply();
           } else {
