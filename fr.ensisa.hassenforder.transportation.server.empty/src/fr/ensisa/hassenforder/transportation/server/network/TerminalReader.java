@@ -73,13 +73,13 @@ public class TerminalReader extends BasicAbstractReader {
 
 
 
-  public GetPassByIdResult readGetPassById()
+  private GetPassByIdResult readGetPassById()
   {
     return new GetPassByIdResult(this.readLong());
   }
 
 
-  public UseTicketResult readUseTicket()
+  private UseTicketResult readUseTicket()
   {
     final long passId = this.readLong();
     final String ticketId = this.readString();

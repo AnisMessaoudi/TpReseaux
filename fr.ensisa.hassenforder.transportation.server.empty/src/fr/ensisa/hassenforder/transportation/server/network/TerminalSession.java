@@ -38,15 +38,39 @@ public class TerminalSession extends Thread {
         case 0 : return false;
 
         case Protocol.REQ_GET_PASS_BY_ID:
-          final long passId =
-            ((TerminalReader.GetPassByIdResult) reader.getResult()).passId;
-          writer.writePassReply(this.listener.terminalFetchPass(passId));
+          final TerminalReader.GetPassByIdResult getPassByIdResult =
+            (TerminalReader.GetPassByIdResult) reader.getResult()
+          ;
+          if (getPassByIdResult == null) {
+            writer.writeKoReply();
+            break;
+          }
+
+          final Pass pass = this.listener.terminalFetchPass(
+            getPassByIdResult.passId
+          );
+          if (pass == null) {
+            writer.writeKoReply();
+            break;
+          }
+
+          writer.writePassReply(pass);
           break;
 
         case Protocol.REQ_USE_TICKET:
-          final TerminalReader.UseTicketResult result =
-            (TerminalReader.UseTicketResult) reader.getResult();
-          if (this.listener.terminalUseTicket(result.passId, result.ticketId, result.count)) {
+          final TerminalReader.UseTicketResult useTicketResult =
+            (TerminalReader.UseTicketResult) reader.getResult()
+          ;
+          if (useTicketResult == null) {
+            writer.writeKoReply();
+            break;
+          }
+
+          if (this.listener.terminalUseTicket(
+            useTicketResult.passId,
+            useTicketResult.ticketId,
+            useTicketResult.count
+          )) {
             writer.writeOkReply();
           } else {
             writer.writeKoReply();
