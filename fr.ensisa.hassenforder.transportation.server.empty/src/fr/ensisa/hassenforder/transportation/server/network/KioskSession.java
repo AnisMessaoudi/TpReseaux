@@ -122,9 +122,10 @@ public class KioskSession extends Thread
 
     if (passId > 0) {
       writer.writeNewPassReply(passId);
-    } else {
-      writer.writeKoReply();
+      return;
     }
+
+    writer.writeKoReply();
   }
 
 
