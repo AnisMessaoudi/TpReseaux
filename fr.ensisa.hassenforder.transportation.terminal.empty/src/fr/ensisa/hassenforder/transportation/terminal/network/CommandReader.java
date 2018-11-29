@@ -35,6 +35,8 @@ public class CommandReader extends BasicAbstractReader {
 
     public void readPassReply()
     {
+      Ticket.Month month=null;
+      
       long passId = readLong();
       String description = readString();
       pass = new Pass(passId, description);
@@ -47,7 +49,10 @@ public class CommandReader extends BasicAbstractReader {
           String id = readString();
           String from = readString();
           String to = readString();
-          Ticket.Month month = Ticket.Month.values()[readInt()];
+          int j=readInt();
+          if( j != -1) {
+             month = Ticket.Month.values()[j];
+          }
           int count = readInt();
           int used = readInt();
           switch (type)
