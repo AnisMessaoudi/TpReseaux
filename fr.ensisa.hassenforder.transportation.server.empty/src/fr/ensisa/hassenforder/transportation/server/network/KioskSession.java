@@ -158,8 +158,10 @@ public class KioskSession extends Thread
         final Transaction trans = this.listener.kioskCreateTransaction(route);
 
         if (trans != null) {
-          writer.writeTransactionReply(trans);
-          return;
+          if (this.listener.kioskAddTicket(route)) {
+            writer.writeTransactionReply(trans);
+            return;
+          }
         }
       }
     }
@@ -179,8 +181,10 @@ public class KioskSession extends Thread
         final Transaction trans = this.listener.kioskCreateTransaction(urban);
 
         if (trans != null) {
-          writer.writeTransactionReply(trans);
-          return;
+          if (this.listener.kioskAddTicket(urban)) {
+            writer.writeTransactionReply(trans);
+            return;
+          }
         }
       }
     }
@@ -197,16 +201,18 @@ public class KioskSession extends Thread
       final Subscription.Month[] months = Subscription.Month.values();
 
       if (request.month >= 0 && request.month < months.length) {
-        final Subscription urban = new Subscription(
+        final Subscription sub = new Subscription(
           request.passId, months[request.month]
         );
 
-        if (urban != null) {
-          final Transaction trans = this.listener.kioskCreateTransaction(urban);
+        if (sub != null) {
+          final Transaction trans = this.listener.kioskCreateTransaction(sub);
 
           if (trans != null) {
-            writer.writeTransactionReply(trans);
-            return;
+            if (this.listener.kioskAddTicket(sub)) {
+              writer.writeTransactionReply(trans);
+              return;
+            }
           }
         }
       }
