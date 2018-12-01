@@ -54,6 +54,10 @@ public class CommandSession implements ISession {
             default :
               return null;
               
+            case 0 :
+              this.close();
+              return null;
+              
             case Protocol.REP_PASS :
               final Pass pass = reader.getPass();
               this.passId = pass.getPassId();
@@ -79,7 +83,8 @@ public class CommandSession implements ISession {
           reader.receive();
           switch(reader.getType()) 
           {
-          case 0:
+          case 0 :
+            this.close();
             return false; // socket closed
 
           default:

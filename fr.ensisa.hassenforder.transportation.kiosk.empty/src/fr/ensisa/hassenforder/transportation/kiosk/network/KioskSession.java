@@ -58,15 +58,15 @@ public class KioskSession implements ISession
       reader.receive();
       switch(reader.getType())
       {
-
-        case Protocol.REP_NEW_PASS :
-          return reader.getPassId();
-          
-        case Protocol.REP_KO : 
-          return -1L;
-          
-        default:
-          return -1L;
+      case 0:
+        this.close();
+        return -1L;
+      case Protocol.REP_NEW_PASS:
+        return reader.getPassId();
+      case Protocol.REP_KO:
+        return -1L;
+      default:
+        return -1L;
       }
     } catch (IOException e)
     {
@@ -87,14 +87,18 @@ public class KioskSession implements ISession
       reader.receive();
       switch(reader.getType())
       {
-        case Protocol.REP_PASS :
-          return reader.getPass();
-          
-        case Protocol.REP_KO : 
-          return null;
-          
-        default:
-          return null;
+      case 0:
+        this.close();
+        return null;
+
+      case Protocol.REP_PASS:
+        return reader.getPass();
+
+      case Protocol.REP_KO:
+        return null;
+
+      default:
+        return null;
       }
     } catch (IOException e)
     {
@@ -115,6 +119,11 @@ public class KioskSession implements ISession
       reader.receive();
       switch (reader.getType())
       {
+      
+      case 0:
+        this.close();
+        return null;
+        
       case Protocol.REP_TRANSACTION:
         return reader.getTransaction();
 
@@ -143,6 +152,10 @@ public class KioskSession implements ISession
       reader.receive();
       switch(reader.getType())
       {
+      case 0:
+        this.close();
+        return null;
+        
       case Protocol.REP_TRANSACTION:
         return reader.getTransaction();
 
@@ -171,15 +184,18 @@ public class KioskSession implements ISession
       reader.receive();
       switch(reader.getType())
       {
-        case Protocol.REP_TRANSACTION :
-          return reader.getTransaction();
-          
-        case Protocol.REP_KO : 
-          return null;
-          
-        default:
-          return null;
-            
+      case 0:
+        this.close();
+        return null;
+      case Protocol.REP_TRANSACTION:
+        return reader.getTransaction();
+
+      case Protocol.REP_KO:
+        return null;
+
+      default:
+        return null;
+
       }
     } catch (IOException e)
     {
@@ -200,6 +216,9 @@ public class KioskSession implements ISession
       reader.receive();
       switch (reader.getType())
       {
+      case 0:
+        this.close();
+        return false;
       case Protocol.REP_KO:
         return true;
         
@@ -228,6 +247,10 @@ public class KioskSession implements ISession
       reader.receive();
       switch (reader.getType())
       {
+      case 0:
+        this.close();
+        return -1L;
+        
       case Protocol.REP_PASS_ID:
         return reader.getPassId();
 
