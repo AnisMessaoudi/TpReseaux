@@ -49,21 +49,20 @@ public class CommandSession implements ISession {
           writer.send();
 
           reader.receive();
-          switch(reader.getType()) 
+          switch(reader.getType())
           {
             default :
               return null;
-              
+
             case 0 :
-              this.close();
               return null;
-              
+
             case Protocol.REP_PASS :
               final Pass pass = reader.getPass();
               this.passId = pass.getPassId();
               return pass;
           }
-          
+
         } catch (IOException e) {
         	this.passId = 0;
             return null;
@@ -74,17 +73,16 @@ public class CommandSession implements ISession {
 	@Override
 	synchronized public boolean useTicket(String ticketId, int count) {
         try {
-        	
+
           CommandWriter writer = new CommandWriter(connection.getOutputStream());
           CommandReader reader = new CommandReader(connection.getInputStream());
           writer.createUseTicket(passId,ticketId, count);
           writer.send();
 
           reader.receive();
-          switch(reader.getType()) 
+          switch(reader.getType())
           {
           case 0 :
-            this.close();
             return false; // socket closed
 
           default:
@@ -95,7 +93,7 @@ public class CommandSession implements ISession {
           }
 
         return true;
-        
+
         } catch (IOException e) {
     		return false;
         }

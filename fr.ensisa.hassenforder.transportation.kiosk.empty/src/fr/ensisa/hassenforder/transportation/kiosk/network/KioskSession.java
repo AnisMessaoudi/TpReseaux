@@ -54,12 +54,11 @@ public class KioskSession implements ISession
       KioskReader reader= new KioskReader(connection.getInputStream());
       writer.createNewPass();
       writer.send();
-      
+
       reader.receive();
       switch(reader.getType())
       {
       case 0:
-        this.close();
         return -1L;
       case Protocol.REP_NEW_PASS:
         return reader.getPassId();
@@ -83,12 +82,11 @@ public class KioskSession implements ISession
       KioskReader reader= new KioskReader(connection.getInputStream());
       writer.createGetPassbyId(passId);
       writer.send();
-      
+
       reader.receive();
       switch(reader.getType())
       {
       case 0:
-        this.close();
         return null;
 
       case Protocol.REP_PASS:
@@ -115,15 +113,14 @@ public class KioskSession implements ISession
       KioskReader reader= new KioskReader(connection.getInputStream());
       writer.createBuyRoute(passId, from, to, count);
       writer.send();
-      
+
       reader.receive();
       switch (reader.getType())
       {
-      
+
       case 0:
-        this.close();
         return null;
-        
+
       case Protocol.REP_TRANSACTION:
         return reader.getTransaction();
 
@@ -148,14 +145,13 @@ public class KioskSession implements ISession
       KioskReader reader= new KioskReader(connection.getInputStream());
       writer.createBuyUrban(passId, count);
       writer.send();
-      
+
       reader.receive();
       switch(reader.getType())
       {
       case 0:
-        this.close();
         return null;
-        
+
       case Protocol.REP_TRANSACTION:
         return reader.getTransaction();
 
@@ -180,12 +176,11 @@ public class KioskSession implements ISession
       KioskReader reader= new KioskReader(connection.getInputStream());
       writer.createBuySubscription(passId, month);
       writer.send();
-      
+
       reader.receive();
       switch(reader.getType())
       {
       case 0:
-        this.close();
         return null;
       case Protocol.REP_TRANSACTION:
         return reader.getTransaction();
@@ -217,14 +212,13 @@ public class KioskSession implements ISession
       switch (reader.getType())
       {
       case 0:
-        this.close();
         return false;
       case Protocol.REP_KO:
         return true;
-        
+
       case Protocol.REP_OK:
         return true;
-        
+
       default:
         return false;
       }
@@ -248,9 +242,8 @@ public class KioskSession implements ISession
       switch (reader.getType())
       {
       case 0:
-        this.close();
         return -1L;
-        
+
       case Protocol.REP_PASS_ID:
         return reader.getPassId();
 
