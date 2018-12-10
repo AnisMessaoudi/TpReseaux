@@ -26,6 +26,6 @@ public class BankWriter extends BasicAbstractWriter
 
   public void writeKoReply()
   {
-    this.writeInt(Protocol.REP_OK);
+    this.writeInt(Protocol.REP_KO);
   }
 }

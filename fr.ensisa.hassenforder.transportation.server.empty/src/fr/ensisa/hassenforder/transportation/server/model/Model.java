@@ -24,7 +24,7 @@ public class Model {
 	public void populate () {
 		prices = new TreeMap<String, Integer>();
 		prices.put ("Altkirch",		(1 << 16) |  4);
-		prices.put ("BÃ¢le",			(2 << 16) |  8);
+		prices.put ("Bâle",			(2 << 16) |  8);
 		prices.put ("Belfort",		(1 << 16) | 10);
 		prices.put ("Cernay",		(4 << 16) |  4);
 		prices.put ("Colmar",		(3 << 16) |  9);
